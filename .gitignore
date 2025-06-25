@@ -1,0 +1,15 @@
+data/
+models/
+output/
+logs/
+*.pkl
+*.csv
+*.json
+!data/reviews_sample_1k.json
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.env
+.venv
+*.egg-info/

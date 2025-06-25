@@ -1,0 +1,89 @@
+# Trust Score Engine Configuration
+
+# Database Configuration
+database:
+  mongodb_uri: "mongodb://localhost:27017/"
+  database_name: "trust_engine"
+  collections:
+    reviews: "reviews"
+    reviewers: "reviewers"
+    trust_scores: "trust_scores"
+    rewards: "rewards"
+  # Add fallback to file storage if MongoDB is not available
+  use_file_storage: true
+  file_storage_path: "./data/storage"
+
+# Feature Engineering Parameters
+features:
+  # Text Analysis
+  semantic_coherence:
+    model_name: "distilbert-base-nli-mean-tokens"
+    similarity_threshold: 0.5
+    
+  sentiment_analysis:
+    outlier_threshold: 2.0  # Standard deviations
+    
+  burstiness:
+    time_window_days: 7
+    burst_threshold: 2.0
+    
+  template_detection:
+    min_tfidf_score: 0.1
+    ngram_range: [2, 4]
+    
+  # Reviewer Profiling
+  activity_pattern:
+    min_reviews: 3
+    max_time_gap_days: 365
+    
+  helpfulness:
+    min_votes: 5
+    helpfulness_threshold: 0.6
+
+# Model Configuration
+model:
+  fusion_model: "logistic_regression"
+  logistic_regression_params:
+    random_state: 42
+    max_iter: 1000
+    solver: "liblinear"
+    
+  # Feature Weights (will be learned by model)
+  feature_weights:
+    semantic_coherence: 0.2
+    sentiment_outlier: 0.15
+    burstiness: 0.15
+    template_score: 0.1
+    verified_purchase: 0.1
+    helpfulness_ratio: 0.1
+    activity_pattern: 0.1
+    sentiment_uniformity: 0.1
+
+# Trust Score Configuration
+trust_score:
+  min_score: 0
+  max_score: 100
+  threshold_for_rewards: 70
+  normalization_method: "min_max"
+
+# Rewards System
+rewards:
+  points_per_trust_score: 1.0  # 1 point per trust score point
+  min_points_for_redemption: 50
+  voucher_values:
+    small: 5
+    medium: 10
+    large: 25
+
+# Processing Configuration
+processing:
+  batch_size: 1000
+  max_workers: 4
+  cache_embeddings: true
+  save_intermediate_results: true
+
+# Dashboard Configuration
+dashboard:
+  port: 8501
+  page_title: "Trust Score Engine Dashboard"
+  refresh_interval: 300  # 5 minutes 
