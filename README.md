@@ -351,7 +351,7 @@ pytest tests/ --cov=src --cov-report=html
 
 | Overview | Trust-Scores | Test a Review |
 |---|---|---|
-| ![Overview](img/overview.png) | ![Trust Scores](img/trust_scores.png) | ![Test Review](img/test_review.png) |
+| ![Overview](img/overview.png) | ![Trust Scores](img/trust_scores.png) | ![Test Review](img/trust_review.png) |
 
 ## 🙏 Acknowledgments
 
