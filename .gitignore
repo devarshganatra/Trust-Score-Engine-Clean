@@ -1,5 +1,7 @@
 data/
-models/
+# models/  # commented to allow tool access
+!src/models/
+
 output/
 logs/
 *.pkl

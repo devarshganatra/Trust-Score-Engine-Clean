@@ -45,13 +45,20 @@ class TrustScorePipeline:
         try:
             logger.info("Loading review data...")
             
-            # Load reviews
+            # Load reviews – support either newline-delimited JSON (one object per line)
+            # or a standard JSON array
             reviews = []
             with open(reviews_file, 'r', encoding='utf-8') as f:
-                for line in f:
-                    if line.strip():
-                        reviews.append(json.loads(line))
-            
+                first_char = f.read(1)
+                f.seek(0)
+                if first_char == '[':
+                    # regular JSON array
+                    reviews = json.load(f)
+                else:
+                    # NDJSON format
+                    for line in f:
+                        if line.strip():
+                            reviews.append(json.loads(line))
             self.reviews_data = reviews
             logger.info(f"Loaded {len(reviews)} reviews")
             

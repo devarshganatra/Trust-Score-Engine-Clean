@@ -341,15 +341,17 @@ flake8 src/ tests/
 pytest tests/ --cov=src --cov-report=html
 ```
 
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## 📞 Contact
 
-- **Project Link**: https://github.com/yourusername/trustengine-clean
-- **Issues**: https://github.com/yourusername/trustengine-clean/issues
-- **Email**: your.email@example.com
+- **Project Link**: https://github.com/devarshganatra/trustengine-clean
+- **Email**: devarsh.ganatra12178@gmail.com
+
+## Demo Screenshots
+
+| Overview | Trust-Scores | Test a Review |
+|---|---|---|
+| ![Overview](docs/img/overview.png) | ![Trust Scores](docs/img/trust_scores.png) | ![Test Review](docs/img/test_review.png) |
 
 ## 🙏 Acknowledgments
 

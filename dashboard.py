@@ -11,6 +11,7 @@ from plotly.subplots import make_subplots
 import numpy as np
 from datetime import datetime, timedelta
 import yaml
+from textblob import TextBlob
 import sys
 import os
 
@@ -56,7 +57,7 @@ st.sidebar.markdown("---")
 # Navigation
 page = st.sidebar.selectbox(
     "Navigation",
-    ["📊 Overview", "📈 Trust Scores", "👥 Reviewers", "🎁 Rewards", "🚨 Alerts", "⚙️ Settings", "📝 Test a Review"]
+    ["📊 Overview", "📈 Trust Scores", "👥 Reviewers", "🚨 Alerts", "⚙️ Settings", "📝 Test a Review"]
 )
 
 # Main content
@@ -292,7 +293,7 @@ elif page == "👥 Reviewers":
             use_container_width=True
         )
 
-elif page == "🎁 Rewards":
+# Rewards page removed
     st.title("🎁 Rewards System")
     
     # Rewards overview
@@ -475,14 +476,29 @@ elif page == "📝 Test a Review":
         # Feature extraction (mimic pipeline)
         review_length = len(review_text)
         helpfulness_ratio = helpful_votes / total_votes if total_votes > 0 else 0.0
+        # --- Simple heuristics for demo ---
+        # semantic_coherence: assume longer reviews are more coherent
+        semantic_coherence = min(len(review_text) / 300, 1.0)
+        # sentiment_outlier_score: absolute polarity difference between rating and sentiment polarity
+        polarity = TextBlob(review_text).sentiment.polarity if review_text else 0.0  # -1..1
+        sentiment_outlier_score = abs((rating - 3)/2 - polarity)  # heuristic
+        # burst_score: shorter reviews get higher burst (1..5)
+        burst_score = max(1, 5 - int(len(review_text)/40))
+        # template_score: assume templates if review very short
+        template_score = 0.2 if len(review_text) < 30 else 0.5
+        verified_purchase_ratio = 0.0  # unknown in demo
+        activity_pattern_score = 0.5   # placeholder
+        sentiment_uniformity_score = 1 - abs(polarity)  # high polarity => low uniformity
+
         features = [
-            0.5,  # semantic_coherence (placeholder)
-            0.0,  # sentiment_outlier_score (placeholder)
-            1.0,  # burst_score (placeholder)
-            review_length,
-            rating,
+            semantic_coherence,
+            sentiment_outlier_score,
+            burst_score,
+            template_score,
+            verified_purchase_ratio,
             helpfulness_ratio,
-            sentiment_score
+            activity_pattern_score,
+            sentiment_uniformity_score
         ]
         import numpy as np
         features = np.array(features).reshape(1, -1)
